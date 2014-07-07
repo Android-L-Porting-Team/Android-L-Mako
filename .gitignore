@@ -2,6 +2,9 @@
 initrd.img
 boot.img
 
+#More working files
+build.prop
+
 #Releases
 release.zip
 release-nogapps.zip
