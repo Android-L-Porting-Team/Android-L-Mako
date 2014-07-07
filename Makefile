@@ -14,3 +14,4 @@ rom:
 clean:
 	make -C boot clean
 	rm -f release.zip
+	rm -f release-nogapps.zip
