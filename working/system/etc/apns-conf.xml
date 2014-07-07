@@ -201,6 +201,14 @@
       type="mms"
   />
 
+  <apn carrier="SIMPLE Mobile"
+       mcc="310"
+       mnc="260"
+       apn="simple"
+       mmsc="http://smpl.mms.msg.eng.t-mobile.com/mms/wapenc"
+       type="default,supl,mms,admin"
+  />
+
   <apn carrier="Ben Internet Abonnee"
       mcc="204"
       mnc="16"
