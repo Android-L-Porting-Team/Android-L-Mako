@@ -35,7 +35,7 @@ ro.board.platform=msm8960
 ro.build.product=mako
 # Do not try to parse description, fingerprint, or thumbprint
 ro.build.description=occam-user L LPV79 1236599 release-keys
-ro.build.fingerprint=google/occam/occam:L/LPV79/1236599:user/release-keys
+ro.build.fingerprint=google/occam/mako:L/LPV79/1236599:user/release-keys
 ro.build.thumbprint=L/LPV79/1236599:user/dev-keys
 ro.build.characteristics=nosdcard
 # end build properties
@@ -97,7 +97,6 @@ wifi.interface=wlan0
 wifi.supplicant_scan_interval=15
 media.aac_51_output_enabled=true
 persist.radio.apm_sim_not_pwdn=1
-ro.telephony.default_network=10
 telephony.lteOnCdmaDevice=1
 persist.radio.mode_pref_nv10=1
 persist.audio.handset.mic.type=digital
