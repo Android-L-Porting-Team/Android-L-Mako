@@ -1,0 +1,11 @@
+#
+# ADDITIONAL_DEFAULT_PROPERTIES
+#
+ro.secure=0
+ro.adb.secure=0
+ro.allow.mock.location=0
+ro.debuggable=1
+ro.zygote=zygote32
+rild.libpath=/system/lib/libril-qc-qmi-1.so
+persist.sys.usb.config=mtp,adb
+ro.boot.selinux=0
