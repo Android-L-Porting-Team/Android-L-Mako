@@ -1,0 +1,13 @@
+language: c
+before_install:
+- sudo apt-get update -qq
+- sudo apt-get install -y abootimg
+script: make
+deploy:
+  provider: releases
+  api_key:
+    secure: UPkry4PYKpJVvKflhg42vp+BPRmfPasLSR1Wur+9SgQBKGI0FrwUypsUTak4GPrs22tMrlWYvCd16OgjXJj7n5BLjAxcNo7TWV/TuRHctvuO1jC7RxVjzmQYeQtA1Uh+5GQRVDxApJBB5G6mglg5QsF+Ls3LkqEzsjyGPXBPSd0=
+  file: release.zip
+  skip_cleanup: true
+  on:
+    repo: Android-L-Porting-Team/Android-L-Mako
