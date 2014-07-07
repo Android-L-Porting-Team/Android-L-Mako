@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<!-- Copyright (C) 2014 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<Included>
+    <Decoders>
+        <MediaCodec name="OMX.google.mp3.decoder" type="audio/mpeg" />
+        <MediaCodec name="OMX.google.amrnb.decoder" type="audio/3gpp" />
+        <MediaCodec name="OMX.google.amrwb.decoder" type="audio/amr-wb" />
+        <MediaCodec name="OMX.google.aac.decoder" type="audio/mp4a-latm" />
+        <MediaCodec name="OMX.google.g711.alaw.decoder" type="audio/g711-alaw" />
+        <MediaCodec name="OMX.google.g711.mlaw.decoder" type="audio/g711-mlaw" />
+        <MediaCodec name="OMX.google.vorbis.decoder" type="audio/vorbis" />
+        <MediaCodec name="OMX.google.opus.decoder" type="audio/opus" />
+        <MediaCodec name="OMX.google.raw.decoder" type="audio/raw" />
+    </Decoders>
+
+    <Encoders>
+        <MediaCodec name="OMX.google.aac.encoder" type="audio/mp4a-latm" />
+        <MediaCodec name="OMX.google.amrnb.encoder" type="audio/3gpp" />
+        <MediaCodec name="OMX.google.amrwb.encoder" type="audio/amr-wb" />
+        <MediaCodec name="OMX.google.flac.encoder" type="audio/flac" />
+    </Encoders>
+</Included>

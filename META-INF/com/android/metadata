@@ -1,0 +1,3 @@
+post-build=Android/aosp_mako/mako:4.4.3.43.43.43/AOSP/sykopompos07022027:userdebug/test-keys
+post-timestamp=1404347231
+pre-device=mako
