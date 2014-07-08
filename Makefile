@@ -1,4 +1,4 @@
-all: zip
+all: clean zip
 
 zip-nogapps: rom
 	cd working && zip -r9 release-nogapps.zip * -x@../gapps-exclude.txt
