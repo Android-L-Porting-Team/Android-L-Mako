@@ -2,17 +2,22 @@ all: zip
 
 zip-nogapps: rom
 	rm -f out/release-nogapps.zip
-	cd working && zip -r9 ../out/release-nogapps.zip * -x@../gapps-exclude.txt && cd ../out/ &&  zip -g release-nogapps.zip system/build.prop boot.img
+	mkdir -p out
+	cd working && zip -r9 ../out/release-nogapps.zip * -x@../gapps-exclude.txt
+	cd tmp &&  zip -r9 ../out/release-nogapps.zip *
 
-zip: rom
+zip: zip-nogapps
 	rm -f out/release.zip
-	cd working && zip -r9 ../out/release.zip * && cd ../out/ &&  zip -g release-nogapps.zip system/build.prop boot.img
+	cp out/release-nogapps.zip out/release.zip
+	cd working && zip -r9 ../out/release.zip * -i@../gapps-exclude.txt
 
 rom:
-	mkdir -p out/system/
+	mkdir -p tmp/system/
 	make -C boot
-	. scripts/buildinfo.sh > out/system/build.prop
+	cp boot/boot.img tmp/
+	. scripts/buildinfo.sh > tmp/system/build.prop
 
 clean:
 	make -C boot clean
-	rm -rf out/*
+	rm -rf out
+	rm -rf tmp

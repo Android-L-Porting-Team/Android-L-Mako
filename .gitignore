@@ -1,5 +1,6 @@
 # Output
 /out/
+/tmp/
 
 # Boot output files
 initrd.img

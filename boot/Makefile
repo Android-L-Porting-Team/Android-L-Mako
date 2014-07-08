@@ -15,9 +15,6 @@ initrd:
 boot: initrd
 	rm -f boot.img
 	abootimg --create boot.img -f bootimg.cfg -k zImage -r initrd.img
-	mv boot.img ../out/
-	rm -f boot.img
-	rm -f initrd.img
 
 clean:
 	rm -f boot.img
