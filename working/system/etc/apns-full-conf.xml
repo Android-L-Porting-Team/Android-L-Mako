@@ -11946,18 +11946,50 @@
       type="default,supl"
   />
 
-  <apn carrier="Zain"
+  <apn carrier="ZAIN-GPRS"
       mcc="418"
       mnc="20"
-      apn="default"
+      apn="internet"
+      user="atheer"
+      password="atheer"
+      authtype="1"
       type="default,supl"
   />
 
-  <apn carrier="ZainHURI - SNPT"
+  <apn carrier="Zain-MMS"
+      mcc="418"
+      mnc="20"
+      apn="MMS"
+      user="atheer"
+      password="atheer"
+      authtype="1"
+      mmsc="http://mms:8002/"
+      mmsproxy="172.29.11.12"
+      mmsport="8080"
+      type="mms"
+  />
+
+  <apn carrier="ZAIN-GPRS"
       mcc="418"
       mnc="30"
-      apn="default"
+      apn="internet"
+      user="atheer"
+      password="atheer"
+      authtype="1"
       type="default,supl"
+  />
+
+  <apn carrier="Zain-MMS"
+      mcc="418"
+      mnc="30"
+      apn="MMS"
+      user="atheer"
+      password="atheer"
+      authtype="1"
+      mmsc="http://mms:8002/"
+      mmsproxy="172.29.11.12"
+      mmsport="8080"
+      type="mms"
   />
 
   <apn carrier="Korek"
