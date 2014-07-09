@@ -146,7 +146,9 @@ on post-fs-data
     mkdir /data/media 0770 media_rw media_rw
     
     chown system system /dev/wcnss_wlan
+    write /dev/wcnss_wlan 1
     write /sys/module/wcnss_ssr_8960/parameters/enable_riva_ssr 1
+    write /sys/module/wcnsscore/parameters/enable_wcnss_suspend_notify 1
 
     mkdir /data/tombstones 0771 system system
     mkdir /tombstones/modem 0771 system system
