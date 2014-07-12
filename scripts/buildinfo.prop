@@ -97,7 +97,6 @@ wifi.supplicant_scan_interval=15
 media.aac_51_output_enabled=true
 persist.radio.apm_sim_not_pwdn=1
 telephony.lteOnCdmaDevice=1
-persist.radio.mode_pref_nv10=1
 persist.audio.handset.mic.type=digital
 persist.audio.dualmic.config=endfire
 persist.audio.fluence.voicecall=true
