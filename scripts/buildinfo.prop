@@ -42,10 +42,12 @@ ro.build.characteristics=nosdcard
 ## from device/lge/mako/system.prop
 ##
 ##
-##set prefer network type
-##LTE, GSM, WCDMA(9)
+## set prefer network type
+## LTE, GSM, WCDMA(9)
 ##
 ro.telephony.default_network=9
+ro.telephony.call_ring.multiple=0
+telephony.lteOnCdmaDevice=1
 
 ##
 ## ADDITIONAL_BUILD_PROPERTIES
@@ -57,23 +59,20 @@ ro.com.android.dateformat=MM-dd-yyyy
 ro.com.android.dataroaming=false
 ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html
 ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html
-ro.com.google.clientidbase=android-google
 ro.carrier=unknown
 ro.opengles.version=196608
 ro.sf.lcd_density=320
 persist.hwc.mdpcomp.enable=true
 ro.audio.monitorRotation=true
-ro.qualcomm.bt.hci_transport=smd
 drm.service.enabled=true
 wifi.interface=wlan0
 wifi.supplicant_scan_interval=15
 media.aac_51_output_enabled=true
 debug.egl.recordable.rgba8888=1
 ro.qc.sensors.wl_dis=true
+ro.qualcomm.bt.hci_transport=smd
 ro.qualcomm.sensors.smd=true
 ro.qualcomm.cabl=1
-hw.cabl.level=Auto
-persist.qcom.cabl.video_only=1
 ro.hwui.texture_cache_size=48
 ro.hwui.layer_cache_size=72
 ro.hwui.r_buffer_cache_size=4
@@ -91,12 +90,10 @@ dalvik.vm.heapsize=512m
 dalvik.vm.heaptargetutilization=0.75
 dalvik.vm.heapminfree=512k
 dalvik.vm.heapmaxfree=8m
-ro.telephony.call_ring.multiple=0
-wifi.interface=wlan0
-wifi.supplicant_scan_interval=15
-media.aac_51_output_enabled=true
+dalvik.vm.stack-trace-file=/data/anr/traces.txt
+dalvik.vm.dexopt-flags=m=y
 persist.radio.apm_sim_not_pwdn=1
-telephony.lteOnCdmaDevice=1
+persist.radio.mode_pref_nv10=0
 persist.audio.handset.mic.type=digital
 persist.audio.dualmic.config=endfire
 persist.audio.fluence.voicecall=true
@@ -104,19 +101,18 @@ persist.audio.fluence.voicerec=false
 persist.audio.fluence.speaker=false
 persist.radio.custom_ecc=1
 persist.radio.always_send_plmn=true
+persist.sys.dalvik.vm.lib.2=libart.so
+persist.qcom.cabl.video_only=1
 fmas.spkr_6ch=35,20,110
 fmas.spkr_2ch=35,25
 fmas.spkr_angles=10
 fmas.spkr_sgain=0
 ro.com.android.dateformat=MM-dd-yyyy
 ro.com.android.dataroaming=false
-ro.url.legal=http://www.google.com/intl/%s/mobile/android/basic/phone-legal.html
-ro.url.legal.android_privacy=http://www.google.com/intl/%s/mobile/android/basic/privacy.html
 ro.com.google.clientidbase=android-google
 ro.com.android.wifi-watchlist=GoogleGuest
+ro.com.widevine.cachesize=16777216
 ro.error.receiver.system.apps=com.google.android.gms
-ro.setupwizard.enterprise_mode=1
-keyguard.no_require_sim=true
 ro.facelock.black_timeout=1250
 ro.facelock.det_timeout=1500
 ro.facelock.rec_timeout=2500
@@ -124,11 +120,10 @@ ro.facelock.lively_timeout=2500
 ro.facelock.est_max_time=1000
 ro.facelock.use_intro_anim=true
 ro.media.effect.bgdropper.adj=0.2
-camera.flash_off=0
+ro.setupwizard.enterprise_mode=1
 ro.setupwizard.network_required=true
-ro.com.widevine.cachesize=16777216
-persist.sys.dalvik.vm.lib.2=libart.so
-dalvik.vm.dexopt-flags=m=y
 net.bt.name=Android
-dalvik.vm.stack-trace-file=/data/anr/traces.txt
-
+camera.flash_off=0
+keyguard.no_require_sim=true
+hw.cabl.level=Auto
+af.resampler.quality=4
