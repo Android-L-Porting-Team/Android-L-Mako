@@ -5,3 +5,4 @@
 # Boot output files
 initrd.img
 boot.img
+new-ramdisk.cpio.gz
