@@ -7,7 +7,7 @@ initrd:
 	mkdir -p ramdisk/dev
 	mkdir -p ramdisk/proc
 	mkdir -p ramdisk/sys
-
+	chmod -R 755 ramdisk
 	chmod g-w ramdisk -R
 
 	abootimg-pack-initrd
