@@ -160,6 +160,8 @@
 /system/bin/uncrypt     u:object_r:uncrypt_exec:s0
 /system/bin/logwrapper  u:object_r:system_file:s0
 /system/bin/vdc         u:object_r:vdc_exec:s0
+/system/bin/install-recovery.sh u:object_r:install_recovery_exec:s0
+/system/bin/dex2oat     u:object_r:dex2oat_exec:s0
 #############################
 # Vendor files
 #
@@ -176,7 +178,6 @@
 /data/system/ndebugsocket	u:object_r:system_ndebug_socket:s0
 /data/drm(/.*)?		u:object_r:drm_data_file:s0
 /data/gps(/.*)?		u:object_r:gps_data_file:s0
-/data/resource-cache(/.*)? u:object_r:resourcecache_data_file:s0
 /data/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
 /data/dalvik-cache/profiles(/.*)? u:object_r:dalvikcache_profiles_data_file:s0
 /data/anr(/.*)?		u:object_r:anr_data_file:s0

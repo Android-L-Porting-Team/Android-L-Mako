@@ -105,7 +105,6 @@ on init
     write /proc/sys/kernel/sched_child_runs_first 0
     write /proc/sys/kernel/randomize_va_space 2
     write /proc/sys/kernel/kptr_restrict 2
-    write /proc/sys/kernel/dmesg_restrict 1
     write /proc/sys/vm/mmap_min_addr 32768
     write /proc/sys/net/ipv4/ping_group_range "0 2147483647"
     write /proc/sys/net/unix/max_dgram_qlen 300
@@ -163,6 +162,39 @@ on init
     chown system log /sys/fs/pstore/console-ramoops
     chmod 0440 /sys/fs/pstore/console-ramoops
 
+  # Healthd can trigger a full boot from charger mode by signaling this
+  # property when the power button is held.
+on property:sys.boot_from_charger_mode=1
+    class_stop charger
+    trigger late-init
+    
+# Load properties from /system/ + /factory after fs mount.
+on load_all_props_action
+    load_all_props
+
+# Indicate to fw loaders that the relevant mounts are up.
+on firmware_mounts_complete
+    rm /dev/.booting
+
+# Mount filesystems and start core system services.
+on late-init
+    trigger early-fs
+    trigger fs
+    trigger post-fs
+    trigger post-fs-data
+
+    # Load properties from /system/ + /factory after fs mount. Place
+    # this in another action so that the load will be scheduled after the prior
+    # issued fs triggers have completed.
+    trigger load_all_props_action
+
+    # Remove a file to wake up anything waiting for firmware.
+    trigger firmware_mounts_complete
+
+    trigger early-boot
+    trigger boot
+
+
 on post-fs
     # once everything is setup, no need to modify /
     mount rootfs rootfs / ro remount
@@ -173,7 +205,12 @@ on post-fs
     chown system cache /cache
     chmod 0770 /cache
     # We restorecon /cache in case the cache partition has been reset.
-    restorecon /cache
+    restorecon_recursive /cache
+    
+    # This may have been created by the recovery system with odd permissions
+    chown system cache /cache/recovery
+    chmod 0770 /cache/recovery
+
 
     # This may have been created by the recovery system with odd permissions
     chown system cache /cache/recovery
@@ -235,6 +272,7 @@ on post-fs-data
     mkdir /data/misc/bluetooth 0770 system system
     mkdir /data/misc/keystore 0700 keystore keystore
     mkdir /data/misc/keychain 0771 system system
+    mkdir /data/misc/net 0750 root shell
     mkdir /data/misc/radio 0770 system radio
     mkdir /data/misc/sms 0770 system radio
     mkdir /data/misc/zoneinfo 0775 system system
@@ -419,6 +457,9 @@ on property:vold.decrypt=trigger_encryption
     start surfaceflinger
     start encrypt
     class_start main
+    
+on property:sys.init_log_level=*
+    loglevel ${sys.init_log_level}
 
 on charger
     class_start charger
@@ -475,13 +516,18 @@ service healthd /sbin/healthd
     class core
     critical
     seclabel u:r:healthd:s0
+    
+service healthd-charger /sbin/healthd -n
+    class charger
+    critical
+    seclabel u:r:healthd:s0
 
 service console /system/bin/sh
     class core
     console
     disabled
     user shell
-    group log
+    group shell log
     seclabel u:r:shell:s0
 
 on property:ro.debuggable=1

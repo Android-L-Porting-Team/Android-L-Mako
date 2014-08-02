@@ -286,14 +286,14 @@ on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
 service rmt_storage /system/bin/rmt_storage
-    class main
+    class main core
     user root
     group system
 
 service hciattach /system/bin/sh /system/etc/init.mako.bt.sh
     class late_start
     user bluetooth
-    group qcom_oncrpc bluetooth net_bt_admin system net_bt_stack
+    group qcom_oncrpc bluetooth net_bt_admin system net_bt_stack net_bt_admin system
     seclabel u:r:bluetooth_loader:s0
     disabled
     oneshot
