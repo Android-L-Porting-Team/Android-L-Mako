@@ -449,11 +449,6 @@ on nonencrypted
 on property:vold.decrypt=trigger_default_encryption
     start defaultcrypto
     
-on property:vold.decrypt=trigger_encryption
-    start surfaceflinger
-    start encrypt
-    class_start main
-    
 on property:sys.init_log_level=*
     loglevel ${sys.init_log_level}
 
@@ -539,12 +534,11 @@ service adbd /sbin/adbd --root_seclabel=u:r:su:s0
 # adbd on at boot in emulator
 on property:ro.kernel.qemu=1
     start adbd
-
+ 
 service lmkd /system/bin/lmkd
     class core
     critical
     socket lmkd seqpacket 0660 system system
-    
 service servicemanager /system/bin/servicemanager
     class core
     user system
@@ -597,21 +591,6 @@ service media /system/bin/mediaserver
     user media
     group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm
     ioprio rt 4
-
-# One shot invocation to deal with encrypted volume.
-service defaultcrypto /system/bin/vdc --wait cryptfs mountdefaultencrypted
-    disabled
-    oneshot
-    # vold will set vold.decrypt to trigger_restart_framework (default
-    # encryption) or trigger_restart_min_framework (other encryption)
-
-# One shot invocation to encrypt unencrypted volumes
-service encrypt /system/bin/vdc --wait cryptfs enablecrypto inplace default
-    disabled
-    oneshot
-    # vold will set vold.decrypt to trigger_restart_framework (default
-    # encryption)
-    
     
 service bootanim /system/bin/bootanimation
     class main
@@ -667,7 +646,3 @@ service mdnsd /system/bin/mdnsd
     disabled
     oneshot
     
-service pre-recovery /system/bin/uncrypt
-    class main
-    disabled
-    oneshot
