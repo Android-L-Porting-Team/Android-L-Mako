@@ -15,13 +15,12 @@
 #
 
 import init.mako.usb.rc
-#import init.mako_svelte.rc
+import init.mako_svelte.rc
 
 on early-init
     mount debugfs debugfs /sys/kernel/debug
     chown system system /sys/kernel/debug/kgsl/proc
-    symlink /data/tombstones /tombstones
-    
+
 on init
     # See storage config details at http://source.android.com/tech/storage/
     mkdir /mnt/shell/emulated 0700 shell shell
@@ -65,7 +64,7 @@ on boot
     chmod 2770 /dev/socket/qmux_radio
     mkdir /dev/socket/qmux_audio 0770 media audio
     chmod 2770 /dev/socket/qmux_audio
-    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth net_bt_stack
+    mkdir /dev/socket/qmux_bluetooth 0770 bluetooth bluetooth
     chmod 2770 /dev/socket/qmux_bluetooth
     mkdir /dev/socket/qmux_gps 0770 gps gps
     chmod 2770 /dev/socket/qmux_gps
@@ -108,8 +107,6 @@ on boot
 
     # Enable DEBUG_SUSPEND, DEBUG_EXIT_SUSPEND, and DEBUG_WAKEUP
     write /sys/module/wakelock/parameters/debug_mask 7
-    
-    write /proc/sys/vm/swappiness 0
 
     #To allow interfaces to get v6 address when tethering is enabled
     write /proc/sys/net/ipv6/conf/rmnet0/accept_ra 2
@@ -129,10 +126,8 @@ on boot
     write /proc/sys/net/ipv6/conf/rmnet_sdio6/accept_ra 2
     write /proc/sys/net/ipv6/conf/rmnet_sdio7/accept_ra 2
 
-    #Enable logging of the wake up reasons in the kernel log
-    write /sys/module/msm_show_resume_irq/parameters/debug_mask 1
 
-    # NFC: create data/nfc for nv storage
+# NFC: create data/nfc for nv storage
     mkdir /data/nfc 770 nfc nfc
     mkdir /data/nfc/param 770 nfc nfc
 
@@ -144,27 +139,19 @@ on boot
 # msm specific files that need to be created on /data
 on post-fs-data
     mkdir /data/media 0770 media_rw media_rw
-    
-    chown system system /dev/wcnss_wlan
-    write /sys/module/wcnss_ssr_8960/parameters/enable_riva_ssr 1
-
-    mkdir /data/tombstones 0771 system system
-    mkdir /tombstones/modem 0771 system system
-    mkdir /tombstones/lpass 0771 system system
-    mkdir /tombstones/wcnss 0771 system system
-
-    mkdir /tombstones/dsps 0771 system system
-    mkdir /tombstones/mdm 0771 system system
 
 # to observe dnsmasq.leases file for dhcp information of soft ap.
     chown dhcp system /data/misc/dhcp
+
+    write /dev/wcnss_wlan 1
+    write /sys/module/wcnss_ssr_8960/parameters/enable_riva_ssr 1
 
     # Create directory used by audio subsystem
     mkdir /data/misc/audio 0770 audio audio
 
     # Workaround for conn_init not copying the updated firmware
-    # rm /data/misc/wifi/WCNSS_qcom_cfg.ini
-    # rm /data/misc/wifi/WCNSS_qcom_wlan_nv.bin
+    rm /data/misc/wifi/WCNSS_qcom_cfg.ini
+    rm /data/misc/wifi/WCNSS_qcom_wlan_nv.bin
 
     # Mounting of persist is moved to 'on emmc-fs' and 'on fs' sections
     # We chown/chmod /persist again so because mount is run as root + defaults
@@ -186,7 +173,7 @@ on post-fs-data
 
     #Create directory used by sensor subsystem(dsps)
     mkdir /data/system/sensors
-    chmod 775 /data/system/sensors
+    chmod 665 /data/system/sensors
     write /data/system/sensors/settings 1
     chmod 660 /data/system/sensors/settings
 
@@ -239,22 +226,11 @@ on post-fs-data
     write /sys/devices/system/cpu/cpufreq/ondemand/sampling_rate 50000
     write /sys/devices/system/cpu/cpufreq/ondemand/io_is_busy 1
     write /sys/devices/system/cpu/cpufreq/ondemand/sampling_down_factor 4
-    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential 10
-    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_multi_core 60
-    write /sys/devices/system/cpu/cpufreq/ondemand/down_differential_multi_core 3
-    write /sys/devices/system/cpu/cpufreq/ondemand/optimal_freq 918000
-    write /sys/devices/system/cpu/cpufreq/ondemand/sync_freq 1026000
-    write /sys/devices/system/cpu/cpufreq/ondemand/up_threshold_any_cpu_load 80
     write /sys/devices/system/cpu/cpu0/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu1/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu2/cpufreq/scaling_min_freq 384000
     write /sys/devices/system/cpu/cpu3/cpufreq/scaling_min_freq 384000
-    write /sys/devices/system/cpu/cpu1/online 1
-    write /sys/devices/system/cpu/cpu2/online 1
-    write /sys/devices/system/cpu/cpu3/online 1
-    write /dev/cpuctl/apps/cpu.notify_on_migrate 1
 
-    
 on charger
     # Enable Power modes and set the CPU Freq Sampling rates
     write /sys/module/rpm_resources/enable_low_power/L2_cache 1
@@ -286,14 +262,14 @@ on property:init.svc.wpa_supplicant=stopped
     stop dhcpcd
 
 service rmt_storage /system/bin/rmt_storage
-    class main core
+    class core
     user root
     group system
 
 service hciattach /system/bin/sh /system/etc/init.mako.bt.sh
     class late_start
     user bluetooth
-    group qcom_oncrpc bluetooth net_bt_admin system net_bt_stack net_bt_admin system
+    group qcom_oncrpc bluetooth net_bt_admin system
     seclabel u:r:bluetooth_loader:s0
     disabled
     oneshot
@@ -313,12 +289,7 @@ service bridgemgrd /system/bin/bridgemgrd
 service qmuxd /system/bin/qmuxd
     class main
     user radio
-    group radio audio bluetooth gps net_bt_stack
-    
-service ks_checker /system/bin/sh /system/etc/kickstart_check
-    class core
-    seclabel u:r:kickstart:s0
-    oneshot
+    group radio audio bluetooth gps
 
 service kickstart /system/bin/qcks -i /firmware/image/ -r /data/tombstones/mdm/
     class core
@@ -397,9 +368,8 @@ on property:ro.data.large_tcp_window_size=true
     # Adjust socket buffer to enlarge TCP receive window for high bandwidth (e.g. DO-RevB)
     write /proc/sys/net/ipv4/tcp_adv_win_scale  1
 
-service charger /sbin/healthd -c
+service charger /charger
     class charger
-    critical
     seclabel u:r:healthd:s0
 
 # virtual sdcard daemon running as media_rw (1023)
@@ -424,13 +394,12 @@ service conn_init /system/bin/conn_init
     class late_start
     user system
     group system wifi
-    seclabel u:r:conn_init:s0
     oneshot
 
 service bdAddrLoader /system/bin/bdAddrLoader -f /persist/bluetooth/.bdaddr -h -x
     class main
     user bluetooth
-    group system bluetooth net_bt_stack
+    group system bluetooth
     oneshot
 
 # bugreport is triggered by holding down volume down, volume up and power

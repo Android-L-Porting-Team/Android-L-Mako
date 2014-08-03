@@ -211,10 +211,6 @@ on post-fs
     chown system cache /cache/recovery
     chmod 0770 /cache/recovery
 
-
-    # This may have been created by the recovery system with odd permissions
-    chown system cache /cache/recovery
-    chmod 0770 /cache/recovery
     # This may have been created by the recovery system with the wrong context.
     restorecon /cache/recovery
 
