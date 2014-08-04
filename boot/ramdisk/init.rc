@@ -445,6 +445,11 @@ on boot
 on nonencrypted
     class_start main
     class_start late_start
+
+on property:vold.decrypt=trigger_encryption
+    start surfaceflinger
+    start encrypt
+    class_start main    
     
 on property:vold.decrypt=trigger_default_encryption
     start defaultcrypto
@@ -539,6 +544,7 @@ service lmkd /system/bin/lmkd
     class core
     critical
     socket lmkd seqpacket 0660 system system
+    
 service servicemanager /system/bin/servicemanager
     class core
     user system
@@ -549,7 +555,7 @@ service servicemanager /system/bin/servicemanager
     onrestart restart media
     onrestart restart surfaceflinger
     onrestart restart drm
-
+   
 service vold /system/bin/vold
     class core
     socket vold stream 0660 root mount
@@ -591,6 +597,20 @@ service media /system/bin/mediaserver
     user media
     group audio camera inet net_bt net_bt_admin net_bw_acct drmrpc mediadrm
     ioprio rt 4
+
+# One shot invocation to deal with encrypted volume.
+service defaultcrypto /system/bin/vdc --wait cryptfs mountdefaultencrypted
+     disabled
+     oneshot
+# vold will set vold.decrypt to trigger_restart_framework (default
+# encryption) or trigger_restart_min_framework (other encryption)
+
+# One shot invocation to encrypt unencrypted volumes
+service encrypt /system/bin/vdc --wait cryptfs enablecrypto inplace default
+    disabled
+    oneshot
+# vold will set vold.decrypt to trigger_restart_framework (default
+# encryption)
     
 service bootanim /system/bin/bootanimation
     class main
@@ -646,3 +666,7 @@ service mdnsd /system/bin/mdnsd
     disabled
     oneshot
     
+service pre-recovery /system/bin/uncrypt
+    class main
+    disabled
+    oneshot
