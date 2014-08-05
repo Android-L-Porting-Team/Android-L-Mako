@@ -32,9 +32,9 @@
 /dev(/.*)?		u:object_r:device:s0
 /dev/akm8973.*		u:object_r:sensors_device:s0
 /dev/accelerometer	u:object_r:sensors_device:s0
-/dev/adf[0-9]*		u:object_r:adf_device:s0
-/dev/adf-interface[0-9]*\.[0-9]*	u:object_r:adf_device:s0
-/dev/adf-overlay-engine[0-9]*\.[0-9]*	u:object_r:adf_device:s0
+/dev/adf[0-9]*		u:object_r:graphics_device:s0
+/dev/adf-interface[0-9]*\.[0-9]*	u:object_r:graphics_device:s0
+/dev/adf-overlay-engine[0-9]*\.[0-9]*	u:object_r:graphics_device:s0
 /dev/alarm		u:object_r:alarm_device:s0
 /dev/android_adb.*	u:object_r:adb_device:s0
 /dev/ashmem		u:object_r:ashmem_device:s0
@@ -100,6 +100,7 @@
 /dev/socket/wpa_eth[0-9] u:object_r:wpa_socket:s0
 /dev/socket/wpa_wlan[0-9] u:object_r:wpa_socket:s0
 /dev/socket/zygote	u:object_r:zygote_socket:s0
+/dev/socket/zygote_secondary	u:object_r:zygote_socket:s0
 /dev/spdif_out.*	u:object_r:audio_device:s0
 /dev/tegra.*		u:object_r:video_device:s0
 /dev/tf_driver		u:object_r:tee_device:s0
@@ -157,6 +158,11 @@
 /system/bin/inputflinger u:object_r:inputflinger_exec:s0
 /system/bin/logd        u:object_r:logd_exec:s0
 /system/bin/uncrypt     u:object_r:uncrypt_exec:s0
+/system/bin/logwrapper  u:object_r:system_file:s0
+/system/bin/vdc         u:object_r:vdc_exec:s0
+/system/bin/install-recovery.sh u:object_r:install_recovery_exec:s0
+/system/bin/dex2oat     u:object_r:dex2oat_exec:s0
+
 #############################
 # Vendor files
 #
@@ -173,17 +179,19 @@
 /data/system/ndebugsocket	u:object_r:system_ndebug_socket:s0
 /data/drm(/.*)?		u:object_r:drm_data_file:s0
 /data/gps(/.*)?		u:object_r:gps_data_file:s0
+/data/resource-cache(/.*)? u:object_r:resourcecache_data_file:s0
 /data/dalvik-cache(/.*)? u:object_r:dalvikcache_data_file:s0
 /data/dalvik-cache/profiles(/.*)? u:object_r:dalvikcache_profiles_data_file:s0
 /data/anr(/.*)?		u:object_r:anr_data_file:s0
-/data/app(/.*)?		u:object_r:apk_data_file:s0
-/data/app/vmdl.*\.tmp	u:object_r:apk_tmp_file:s0
-/data/app-private(/.*)?		u:object_r:apk_private_data_file:s0
-/data/app-private/vmdl.*\.tmp	u:object_r:apk_private_tmp_file:s0
+/data/app(/.*)?                       u:object_r:apk_data_file:s0
+/data/app/vmdl.*\.tmp(/.*)?           u:object_r:apk_tmp_file:s0
+/data/app-private(/.*)?               u:object_r:apk_private_data_file:s0
+/data/app-private/vmdl.*\.tmp(/.*)?   u:object_r:apk_private_tmp_file:s0
 /data/tombstones(/.*)?	u:object_r:tombstone_data_file:s0
 /data/local/tmp(/.*)?	u:object_r:shell_data_file:s0
 /data/media(/.*)?	u:object_r:media_rw_data_file:s0
 /data/mediadrm(/.*)?	u:object_r:media_data_file:s0
+/data/property(/.*)?	u:object_r:property_data_file:s0
 
 # Misc data
 /data/misc/adb(/.*)?            u:object_r:adb_keys_file:s0
@@ -196,6 +204,8 @@
 /data/misc/dhcp(/.*)?           u:object_r:dhcp_data_file:s0
 /data/misc/keystore(/.*)?       u:object_r:keystore_data_file:s0
 /data/misc/media(/.*)?          u:object_r:media_data_file:s0
+/data/misc/net(/.*)?            u:object_r:net_data_file:s0
+/data/misc/shared_relro(/.*)?   u:object_r:shared_relro_file:s0
 /data/misc/sms(/.*)?            u:object_r:radio_data_file:s0
 /data/misc/systemkeys(/.*)?     u:object_r:systemkeys_data_file:s0
 /data/misc/vpn(/.*)?            u:object_r:vpn_data_file:s0
@@ -231,26 +241,23 @@
 
 #############################
 # asec containers
-/mnt/asec(/.*)?           u:object_r:asec_apk_file:s0
-/mnt/asec/[^/]+/res\.zip   u:object_r:asec_public_file:s0
-/mnt/asec/[^/]+/lib(/.*)? u:object_r:asec_public_file:s0
-/data/app-asec(/.*)?      u:object_r:asec_image_file:s0
-#line 1 "device/asus/flo/sepolicy/file_contexts"
-# Used by keystore to access trustzone
-/dev/qseecom        u:object_r:tee_device:s0
+/mnt/asec(/.*)?             u:object_r:asec_apk_file:s0
+/mnt/asec/[^/]+/[^/]+\.zip  u:object_r:asec_public_file:s0
+/mnt/asec/[^/]+/lib(/.*)?   u:object_r:asec_public_file:s0
+/data/app-asec(/.*)?        u:object_r:asec_image_file:s0
+#line 1 "device/lge/mako/sepolicy/file_contexts"
+# GPU device (world r/w)
+/dev/kgsl-3d0       u:object_r:gpu_device:s0
+/dev/kgsl           u:object_r:gpu_device:s0
 
 # GPS
 /dev/gss               u:object_r:sensors_device:s0
 
-# WLAN
-/dev/wcnss_wlan         u:object_r:wlan_device:s0
-
-###### GPU device (world r/w)
-/dev/kgsl-3d0       u:object_r:gpu_device:s0
-/dev/kgsl           u:object_r:gpu_device:s0
-
 # Image Rotator Driver
 /dev/msm_rotator    u:object_r:video_device:s0
+
+# Qualcomm Secure Execution Environment Communicator (QSEECOM) device
+/dev/qseecom        u:object_r:tee_device:s0
 
 # Qualcomm MSM Interface (QMI) devices
 /dev/socket/qmux_audio(/.*)?           u:object_r:qmuxd_socket:s0
@@ -261,20 +268,8 @@
 /dev/bcm2079x-i2c                  u:object_r:nfc_device:s0
 /dev/diag                          u:object_r:diag_device:s0
 
-# efs block labeling
-/dev/block/mmcblk0p[567]           u:object_r:efs_block_device:s0
-/dev/block/mmcblk0p28              u:object_r:efs_block_device:s0
-# Root block labeling
-/dev/block/mmcblk0                 u:object_r:root_block_device:s0
-# modemst1, modemst2, fsg, ssd labeling
-/dev/block/mmcblk0p[238]           u:object_r:modem_block_device:s0
-/dev/block/mmcblk0p27              u:object_r:modem_block_device:s0
-
 # CPU governor controls
 /dev/socket/mpdecision(/.*)?           u:object_r:mpdecision_socket:s0
-
-# HDMI output socket (mm-pp-daemon)
-/dev/socket/pps                        u:object_r:ppd_socket:s0
 
 ## Radio related
 # modem driver
@@ -334,6 +329,10 @@
 /system/bin/efsks                  u:object_r:kickstart_exec:s0
 /system/bin/ks                     u:object_r:kickstart_exec:s0
 
+# Block labeling
+/dev/block/mmcblk0p[89]            u:object_r:efs_block_device:s0
+/dev/block/mmcblk0                 u:object_r:root_block_device:s0
+
 /data/cam_socket[0-9]              u:object_r:camera_socket:s0
 /data/app/sensor_ctl_socket        u:object_r:sensors_socket:s0
 
@@ -347,8 +346,6 @@
 /system/bin/hci_qcomm_init         u:object_r:hci_attach_exec:s0
 /system/bin/bdAddrLoader           u:object_r:bluetooth_loader_exec:s0
 /system/etc/init\.mako\.bt\.sh        u:object_r:bluetooth_loader_exec:s0
-# rmt_storage is a qualcomm specific daemon responsible
-# for servicing modem filesystem requests.
 /system/bin/rmt_storage            u:object_r:rmt_exec:s0
 /system/bin/bridgemgrd             u:object_r:bridge_exec:s0
 /system/bin/qmuxd                  u:object_r:qmux_exec:s0
@@ -359,28 +356,25 @@
 /system/bin/mm-qcamera-daemon      u:object_r:camera_exec:s0
 /system/bin/qseecomd               u:object_r:tee_exec:s0
 /system/bin/conn_init              u:object_r:conn_init_exec:s0
-/system/bin/mm-pp-daemon           u:object_r:ppd_exec:s0
-/system/bin/irsc_util              u:object_r:irsc_util_exec:s0
 
 # Persist firmware filesystem
-/persist(/.*)?                    u:object_r:persist_file:s0
-/persist/bluetooth(/.*)?          u:object_r:persist_bluetooth_file:s0
-/persist/camera_calibration(/.*)? u:object_r:persist_camera_file:s0
-/persist/data(/.*)?               u:object_r:persist_data_file:s0
-/persist/sensors(/.*)?            u:object_r:persist_sensors_file:s0
-/persist/playready(/.*)?          u:object_r:persist_drm_file:s0
-/persist/widevine(/.*)?           u:object_r:persist_drm_file:s0
-/persist/wifi(/.*)?               u:object_r:persist_wifi_file:s0
+/persist(/.*)?                   u:object_r:persist_file:s0
+/persist/bluetooth(/.*)?         u:object_r:persist_bluetooth_file:s0
+/persist/sensors(/.*)?           u:object_r:persist_sensors_file:s0
+/persist/playready(/.*)?         u:object_r:persist_drm_file:s0
+/persist/widevine(/.*)?          u:object_r:persist_drm_file:s0
+/persist/wifi(/.*)?              u:object_r:persist_wifi_file:s0
 
 # Sysfs entry for the RmNet function driver
 /sys/class/android_usb/f_rmnet_smd_sdio/transport  --  u:object_r:sysfs_rmnet:s0
 /sys/devices/virtual/android_usb/android0/f_rmnet_smd_sdio/transport  --  u:object_r:sysfs_rmnet:s0
-/sys/module/rmnet_usb/parameters/rmnet_data_init -- u:object_r:sysfs_rmnet:s0
 
 # Sysfs files used by mpdecision
 /sys/module/pm2/modes(/.*)?            u:object_r:sysfs_mpdecision:s0
 /sys/module/pm_8x60/modes(/.*)?        u:object_r:sysfs_mpdecision:s0
 
-# Sysfs files used by surfaceflinger
-/sys/devices/virtual/graphics/fb1/format_3d -- u:object_r:sysfs_surfaceflinger:s0
-/sys/devices/virtual/graphics/fb1/hpd       -- u:object_r:sysfs_surfaceflinger:s0
+# Sysfs files used by qmuxd
+/sys/devices/virtual/smdpkt/smdcntl([0-9])+/open_timeout u:object_r:sysfs_smdcntl_open_timeout:s0
+
+# Bluetooth
+/sys/devices/platform/bluetooth_rfkill/rfkill/rfkill0/state u:object_r:sysfs_bluetooth_writable:s0
