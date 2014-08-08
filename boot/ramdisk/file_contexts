@@ -162,6 +162,8 @@
 /system/bin/vdc         u:object_r:vdc_exec:s0
 /system/bin/install-recovery.sh u:object_r:install_recovery_exec:s0
 /system/bin/dex2oat     u:object_r:dex2oat_exec:s0
+# patchoat executable has (essentially) the same requirements as dex2oat.
+/system/bin/patchoat    u:object_r:dex2oat_exec:s0
 
 #############################
 # Vendor files
@@ -249,9 +251,6 @@
 # GPU device (world r/w)
 /dev/kgsl-3d0       u:object_r:gpu_device:s0
 /dev/kgsl           u:object_r:gpu_device:s0
-
-# GPS
-/dev/gss               u:object_r:sensors_device:s0
 
 # Image Rotator Driver
 /dev/msm_rotator    u:object_r:video_device:s0
@@ -372,9 +371,3 @@
 # Sysfs files used by mpdecision
 /sys/module/pm2/modes(/.*)?            u:object_r:sysfs_mpdecision:s0
 /sys/module/pm_8x60/modes(/.*)?        u:object_r:sysfs_mpdecision:s0
-
-# Sysfs files used by qmuxd
-/sys/devices/virtual/smdpkt/smdcntl([0-9])+/open_timeout u:object_r:sysfs_smdcntl_open_timeout:s0
-
-# Bluetooth
-/sys/devices/platform/bluetooth_rfkill/rfkill/rfkill0/state u:object_r:sysfs_bluetooth_writable:s0

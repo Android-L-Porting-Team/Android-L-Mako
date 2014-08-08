@@ -23,7 +23,7 @@ sys.                    u:object_r:system_prop:s0
 sys.powerctl            u:object_r:powerctl_prop:s0
 service.                u:object_r:system_prop:s0
 wlan.                   u:object_r:system_prop:s0
-dhcp.                   u:object_r:system_prop:s0
+dhcp.                   u:object_r:dhcp_prop:s0
 dhcp.bt-pan.result      u:object_r:pan_result_prop:s0
 bluetooth.              u:object_r:bluetooth_prop:s0
 
