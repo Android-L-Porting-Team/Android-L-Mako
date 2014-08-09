@@ -8,7 +8,6 @@ ro.debuggable=1
 ro.zygote=zygote32
 rild.libpath=/system/lib/libril-qc-qmi-1.so
 persist.sys.usb.config=mtp,adb
-ro.boot.selinux=0
 dalvik.vm.dex2oat-Xms=64m
 dalvik.vm.dex2oat-Xmx=512m
 dalvik.vm.image-dex2oat-Xms=64m
