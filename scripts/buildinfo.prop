@@ -91,9 +91,7 @@ dalvik.vm.heaptargetutilization=0.75
 dalvik.vm.heapminfree=512k
 dalvik.vm.heapmaxfree=8m
 dalvik.vm.stack-trace-file=/data/anr/traces.txt
-dalvik.vm.lockprof.threshold=500
 dalvik.vm.dexopt-flags=m=y
-dalvik.vm.profiler=1
 persist.radio.apm_sim_not_pwdn=1
 persist.radio.mode_pref_nv10=0
 persist.audio.handset.mic.type=digital
